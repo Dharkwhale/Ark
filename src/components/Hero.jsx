@@ -10,14 +10,14 @@ export default function CryptoHero() {
     { id: "ripple", symbol: "XRP", name: "Ripple" },
     { id: "dogecoin", symbol: "DOGE", name: "Dogecoin" },
     { id: "tether", symbol: "USDT", name: "Tether" },
-    { id: "binancecoin", symbol: "BNB", name: "Binancecoin" },
+    { id: "binancecoin", symbol: "BNB", name: "Binance Coin" },
     { id: "usd-coin", symbol: "USDC", name: "USD Coin" }
   ];
 
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const ids = coins.map(c => c.id).join(",");
+        const ids = coins.map((c) => c.id).join(",");
         const res = await fetch(
           `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`
         );
@@ -29,7 +29,7 @@ export default function CryptoHero() {
     };
 
     fetchPrices();
-    const interval = setInterval(fetchPrices, 10000); // refresh every 10s
+    const interval = setInterval(fetchPrices, 10000);
     return () => clearInterval(interval);
   }, []);
 
@@ -68,12 +68,15 @@ export default function CryptoHero() {
 
       <style>
         {`
-          @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-          }
           .animate-marquee {
-            animation: marquee 20s linear infinite;
+            display: inline-flex;
+            min-width: 200%;
+            animation: marquee 25s linear infinite;
+          }
+
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
           }
         `}
       </style>
