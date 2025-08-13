@@ -1,70 +1,83 @@
-import image from '../assets/image.jpg'
-import image1 from '../assets/image1.jpg'
-import image2 from '../assets/image2.png'
+import React from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+
+import icon1 from "../assets/icon1.gif";
+import icon2 from "../assets/icon2.gif";
+import icon3 from "../assets/icon3.gif";
+import icon4 from "../assets/icon4.gif";
+
+const features = [
+  {
+    icon: icon1,
+    title: "Real-Time Dex Insights",
+    description:
+      "Visualize token flows, smart money moves, and detailed charts—all in real time.",
+    hoverBg: "hover:bg-blue-500",
+  },
+  {
+    icon: icon2,
+    title: "Deep Token Analytics",
+    description:
+      "Dive into token stats, smart money movements, and in-depth data at your fingertips.",
+    hoverBg: "hover:bg-blue-500",
+  },
+  {
+    icon: icon3,
+    title: "DeFi Portfolio Tracker",
+    description:
+      "Monitor your portfolio’s performance, yields, and trends on one clean dashboard.",
+    hoverBg: "hover:bg-blue-500",
+  },
+  {
+    icon: icon4,
+    title: "On-Chain Alerts",
+    description:
+      "Stay updated with on-chain actions such as whale activity and large transfers.",
+    hoverBg: "hover:bg-blue-500",
+  },
+];
 
 export default function Services() {
   return (
-    <section className="py-20 bg-[#0f0f3d] text-white">
-      <div className="container mx-auto px-4">
-        {/* Service Items - Vertically stacked with larger images */}
-        <div className="flex flex-col space-y-32">
-          {/* Item 1 - DEX Insights */}
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="w-full md:w-3/5">
+    <section className="py-16 bg-[#0a0a2e] px-4"> {/* doubled height & white bg */}
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-center text-4xl font-bold mb-12 text-[#0bb5e0]">
+          How It Works
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, idx) => (
+            <motion.div
+              key={idx}
+              className={`group bg-white 
+      ${idx % 2 === 0 
+        ? "rounded-tl-[50px] rounded-br-[50px] rounded-tr-lg rounded-bl-lg" 
+        : "rounded-tr-[50px] rounded-bl-[50px] rounded-tl-lg rounded-br-lg"
+      }
+      px-6 pt-12 py-20 flex flex-col items-center text-center 
+      border border-blue-100 shadow-md transition-all duration-300 
+      ${feature.hoverBg} hover:scale-105 justify-start`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.2 }}
+            >
               <img
-                src={image}
-                alt="Bitcoin with digital connections"
-                className="rounded-xl w-full h-auto object-cover shadow-lg shadow-[#0bb5e0]/20"
+                src={feature.icon}
+                alt={feature.title}
+                className="w-16 h-16 mb-4"
               />
-            </div>
-            <div className="w-full md:w-2/5">
-              <h3 className="text-3xl font-bold text-[#0bb5e0] mb-6">Unlock Real-Time DEX Insights</h3>
-              <p className="text-gray-300 text-lg">
-                Discover in-depth insights into Token movements with Token View. Access dedicated pages for each token,
-                track smart money flows, explore token holdings, and view detailed price charts. Analyze data through
-                comprehensive tables to make better decisions with all the information at your fingertips.
-              </p>
-            </div>
-          </div>
-
-          {/* Item 2 - Token Data */}
-          <div className="flex flex-col md:flex-row-reverse items-center gap-12">
-            <div className="w-full md:w-3/5">
-              <img
-                src={image1}
-                alt="Blockchain visualization"
-                className="rounded-xl w-full h-auto object-cover shadow-lg shadow-[#0bb5e0]/20"
-              />
-            </div>
-            <div className="w-full md:w-2/5">
-              <h3 className="text-3xl font-bold text-[#0bb5e0] mb-6">Gain Access to Token Data</h3>
-              <p className="text-gray-300 text-lg">
-                Explore specific pages for each token and track smart money movements. Stay updated on token holdings
-                and view real-time price charts that help you make smarter decisions.
-              </p>
-            </div>
-          </div>
-
-          {/* Item 3 - DeFi Portfolio */}
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="w-full md:w-3/5">
-              <img
-                src={image2}
-                alt="DeFi portfolio visualization"
-                className="rounded-xl w-full h-auto object-cover shadow-lg shadow-[#0bb5e0]/20"
-              />
-            </div>
-            <div className="w-full md:w-2/5">
-              <h3 className="text-3xl font-bold text-[#0bb5e0] mb-6">Analyze DeFi Portfolio Performance</h3>
-              <p className="text-gray-300 text-lg">
-                Gain a clear overview of your decentralized finance (DeFi) portfolio with Ark's performance analytics.
-                Instantly view real-time updates on your assets, track yields, and monitor historical trends, enabling
-                you to stay informed on your portfolio's progress and make data-driven decisions with ease.
-              </p>
-            </div>
-          </div>
+              <h3 className="text-xl group-hover:text-white font-semibold mb-2 text-[#0bb5e0]">
+                {feature.title}
+              </h3>
+              <p className="text-blue-700 group-hover:text-white">{feature.description}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
+
+
+
+
