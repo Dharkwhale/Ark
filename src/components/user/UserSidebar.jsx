@@ -1,30 +1,31 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Home, BarChart2, List, TrendingUp, LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { logoutAdmin } from "../../services/authSlice"; // ✅ adjust path if needed
-import { Home, PlusCircle, Trash2, UserPlus, LogOut } from "lucide-react";
+import { logoutUser } from "../../services/authSlice"; // ✅ adjust path if needed
 
-export default function AdminSidebar() {
+export default function UserSidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logoutAdmin());  // clear admin auth state
-    navigate("/admin-login"); // redirect to admin login page
+    localStorage.removeItem('userToken')
+    // dispatch(logoutUser());   // clear auth state
+    navigate("/");            // redirect to landing page
   };
 
   const menuItems = [
-    { name: "Dashboard", icon: Home, path: "/admin/dashboard" },
-    { name: "Create Wallet", icon: PlusCircle, path: "/admin/create-wallet" },
-    { name: "Delete Wallet", icon: Trash2, path: "/admin/delete-wallet" },
-    { name: "Register", icon: UserPlus, path: "/admin/register" },
+    { name: "Dashboard", icon: Home, path: "/app/home" },
+    { name: "Top Holds", icon: TrendingUp, path: "/app/home/top-holds" },
+    { name: "Addresses", icon: List, path: "/app/home/addresses" },
+    { name: "Recent Trades", icon: BarChart2, path: "/app/home/recent-trades" },
   ];
 
   return (
-    <aside className="w-64 bg-[#0a0a2e] shadow-lg flex flex-col h-screen border-r border-[#0bb5e0]/30">
+    <aside className="w-64 bg-[#0a0a2e] shadow-lg flex flex-col border-r border-[#0bb5e0]/30">
       {/* Logo */}
       <div className="h-16 flex items-center justify-center border-b font-bold text-xl text-white">
-        Admin Dashboard
+        User Dashboard
       </div>
 
       {/* Menu */}
@@ -35,8 +36,7 @@ export default function AdminSidebar() {
             to={item.path}
             className={({ isActive }) =>
               `flex items-center px-3 py-2 rounded-lg transition-colors ${
-                isActive
-                  ? "bg-[#0bb5e0]/10 text-[#0bb5e0] font-semibold"
+                isActive ? "bg-[#0bb5e0]/10 text-[#0bb5e0] font-semibold"
                   : "text-white hover:bg-[#0bb5e0]/10 hover:text-[#0bb5e0]"
               }`
             }
@@ -47,11 +47,11 @@ export default function AdminSidebar() {
         ))}
       </nav>
 
-      {/* Logout pinned at bottom */}
-      <div className="mt-auto p-4 border-t border-[#0bb5e0]/30">
+      {/* Logout Button */}
+      <div className="p-4 border-t border-[#0bb5e0]/30">
         <button
           onClick={handleLogout}
-          className="flex items-center w-full px-3 py-2 text-red-500 hover:bg-red-600/10 hover:text-red-600 rounded-lg cursor-pointer transition"
+          className="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg cursor-pointer"
         >
           <LogOut className="w-5 h-5 mr-3" />
           Logout

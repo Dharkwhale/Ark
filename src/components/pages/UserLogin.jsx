@@ -1,48 +1,65 @@
-import { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { loginUser } from '../../services/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../services/authSlice";
+import { useNavigate } from "react-router-dom";
+import BASEURL from "../../utils/constant";
 
 export default function UserLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
   const initialValues = {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().required("Password is required"),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    setErrorMsg('');
+    setErrorMsg("");
     setLoading(true);
-
+  
     try {
-      const response = await axios.post('http://localhost:8800/v1/auth/login', values);
-
-      const { token, user } = response.data;
-
+      const response = await axios.post(
+        `${BASEURL}/auth/login`,
+        values
+      );
+  
+      console.log("✅ Raw response:", response);
+  
+      // Correctly extract token & user
+      const { user, token } = response.data.data;
+      window.localStorage.setItem('token', JSON.stringify())
+  
+      if (!token || !user) {
+        throw new Error("Invalid response from server");
+      }
+  
+      // Save user info in Redux
       dispatch(loginUser({ token, user }));
-      if (user.role === 'admin') {
-        navigate('/admin/dashboard');
+  
+      // Redirect based on role
+      if (user.role === "ADMIN") {
+        console.log('admin');
+        navigate("/admin/dashboard");
       } else {
-        navigate('/app/home');
-    }
+        navigate("/app/home");
+      }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("❌ Login error:", error);
+  
       setErrorMsg(
         error?.response?.data?.message ||
-        error?.message ||
-        'Something went wrong during login.'
+          error?.message ||
+          "Something went wrong during login."
       );
     } finally {
       setSubmitting(false);
@@ -64,26 +81,44 @@ export default function UserLogin() {
             <Form className="space-y-4">
               <div>
                 <label className="block mb-1">Email</label>
-                <Field name="email" type="email" className="w-full p-2 rounded bg-gray-800 text-white" />
-                <ErrorMessage name="email" component="div" className="text-red-400 text-sm" />
+                <Field
+                  name="email"
+                  type="email"
+                  className="w-full p-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#0bb5e0]"
+                />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="text-red-400 text-sm"
+                />
               </div>
 
               <div>
                 <label className="block mb-1">Password</label>
-                <Field name="password" type="password" className="w-full p-2 rounded bg-gray-800 text-white" />
-                <ErrorMessage name="password" component="div" className="text-red-400 text-sm" />
+                <Field
+                  name="password"
+                  type="password"
+                  className="w-full p-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#0bb5e0]"
+                />
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="text-red-400 text-sm"
+                />
               </div>
 
               {errorMsg && (
-                <div className="text-red-500 text-sm text-center">{errorMsg}</div>
+                <div className="text-red-500 text-sm text-center">
+                  ❌ {errorMsg}
+                </div>
               )}
 
               <button
                 type="submit"
                 disabled={isSubmitting || loading}
-                className="w-full bg-[#0bb5e0] hover:bg-[#0999c0] text-white font-bold py-2 rounded"
+                className="w-full bg-[#0bb5e0] hover:bg-[#0999c0] text-white font-bold py-2 rounded transition"
               >
-                {isSubmitting || loading ? 'Logging in...' : 'Login'}
+                {isSubmitting || loading ? "Logging in..." : "Login"}
               </button>
             </Form>
           )}

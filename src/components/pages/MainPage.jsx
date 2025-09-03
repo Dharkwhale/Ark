@@ -1,27 +1,18 @@
-// import Navbar from "../../components/Navbar";
-// import Hero from "../../components/Hero";
-// import Service from "../../components/Service";
-// import Newsletter from "../../components/Newsletter";
-
-// export default function MainPage() {
-//   return (
-//     <div className="min-h-screen bg-[#0a0a2e]">
-//       <Navbar />
-//       <div className="pt-16">
-//         <Hero />
-//         <Service />
-//         <Newsletter />
-//       </div>
-//     </div>
-//   );
-// }
-
 // src/components/pages/MainPage.jsx
+import UserSidebar from "../user/UserSidebar";
+import UserTopbar from "../user/UserTopbar";
+import UserDashboard from "../user/UserDashboard";
+
 export default function MainPage() {
-    return (
-      <div className="text-white min-h-screen flex items-center justify-center bg-blue-900">
-        <h1>This is the Main Page</h1>
+  return (
+    <div className="flex min-h-screen">
+      <UserSidebar />
+      <div className="flex flex-col flex-1">
+        <UserTopbar />
+        <div className="flex-1 p-6 bg-[#f9f9f9]">
+          <UserDashboard />
+        </div>
       </div>
-    );
-  }
-  
+    </div>
+  );
+}

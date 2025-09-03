@@ -1,14 +1,24 @@
 // services/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
+// ✅ Safe JSON parse function
+const safeJSONParse = (value) => {
+  try {
+    return value ? JSON.parse(value) : null;
+  } catch (error) {
+    console.warn("⚠️ Failed to parse JSON from localStorage:", error);
+    return null;
+  }
+};
+
 const storedAdminLogin = localStorage.getItem("isAdminLoggedIn") === "true";
 const storedUserToken = localStorage.getItem("userToken");
-const storedUserInfo = localStorage.getItem("userInfo");
+const storedUserInfo = safeJSONParse(localStorage.getItem("userInfo"));
 
 const initialState = {
   isAdminLoggedIn: storedAdminLogin,
   userToken: storedUserToken || null,
-  userInfo: storedUserInfo ? JSON.parse(storedUserInfo) : null,
+  userInfo: storedUserInfo,
   isUserLoggedIn: !!storedUserToken,
 };
 

@@ -1,10 +1,17 @@
-// src/components/LandingLayout.jsx
 import { Outlet } from "react-router-dom";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
-export default function LandingLayout() {
+const LandingLayout = () => {
   return (
-    <div>
-      <Outlet />
-    </div>
+    <>
+      <Navbar />
+      <main>
+        <Outlet />  {/* 👈 This is where child routes (LandingPage, About, Proofs, Subscribe) will render */}
+      </main>
+      <Footer />
+    </>
   );
-}
+};
+
+export default LandingLayout;

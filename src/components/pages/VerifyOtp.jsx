@@ -45,9 +45,9 @@ export default function VerifyOtp() {
   // Submit OTP
   const handleSubmit = (values, { setSubmitting }) => {
     axios
-      .post("http://localhost:8800/v1/auth/otp/verify", {
+      .post("https://ark-analytical.onrender.com/v1/auth/otp/verify", {
         email, // ✅ Use email from navigation state
-        otp: values.otp,
+        code: values.otp,
       })
       .then((res) => {
         alert("OTP Verified Successfully!");
@@ -69,7 +69,7 @@ export default function VerifyOtp() {
       return;
     }
     axios
-      .post("http://localhost:8800/v1/auth/otp/send", { email })
+      .post("https://ark-analytical.onrender.com/v1/auth/otp/send", { email })
       .then(() => {
         setResendStatus("A new OTP has been sent to your email.");
         setTimeout(() => setResendStatus(""), 5000);
