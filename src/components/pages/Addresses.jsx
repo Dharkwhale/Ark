@@ -13,6 +13,7 @@ const Addresses = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [addresses, setAddresses] = useState([])
+  const [addressesData, setAddressesData] = useState([])
   const [pagination, setPagination] = useState({
     page: 1,
     perPage: 10,
@@ -56,6 +57,21 @@ const Addresses = () => {
     { title: "Wallet Chain", dataIndex: "chain", key: "chain" },
   ]
 
+  const { data, total, page: apiPage, totalPages } = addressesData;
+
+  useEffect(() => {
+    setAddresses(data || [])
+    setPagination({
+      page: apiPage || 1,
+      total: total || 0,
+      totalPages: totalPages || 1,
+    })
+  }, [data, total, apiPage, totalPages])
+
+  console.log(data, total, apiPage, totalPages)
+
+  
+
   const loadAddresses = async (page = 1, perPage = 10) => {
     setLoading(true)
     setError(null)
@@ -63,14 +79,16 @@ const Addresses = () => {
       const res = await fetchAddresses(page, perPage)
       toast.success("address fetched!!");
 
-      const { data, total, page: currentPage, totalPages } = res
-      setAddresses(data || [])
-      setPagination({
-        page: currentPage || page,
-        perPage,
-        total: total || 0,
-        totalPages: totalPages || 1,
-      })
+      setAddressesData(res)
+
+      // const { data, total, page: currentPage, totalPages } = res
+      // setAddresses(data || [])
+      // setPagination({
+      //   page: currentPage || page,
+      //   perPage,
+      //   total: total || 0,
+      //   totalPages: totalPages || 1,
+      // })
     } catch (err) {
       setError("Failed to load addresses")
       console.error(error)

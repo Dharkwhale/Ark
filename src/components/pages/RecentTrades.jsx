@@ -7,13 +7,25 @@ const RecentTrades = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [trades, setTrades] = useState([]);
+  const [recentTradesData, setRecentTradesData] = useState([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
     total: 0,
   });
 
+  const { data, total, page: apiPage, totalPages } = recentTradesData;
 
+  useEffect(() => {
+    setTrades(data || [])
+    setPagination({
+      page: apiPage || 1,
+      total: total || 0,
+      totalPages: totalPages || 1,
+    })
+  }, [data, total, apiPage, totalPages])
+
+  console.log(data, total, apiPage, totalPages)
 
   // ✅ Fetch function
   const loadRecentTrades = async (page = 1, pageSize = 10) => {
@@ -22,16 +34,16 @@ const RecentTrades = () => {
     try {
       const res = await getRecentTrades(page, pageSize);
 
-    
+      setRecentTradesData(res)
 
       // Match API structure
-      const { data, total } = res
-      setTrades(data || []);
-      setPagination({
-        current: page,
-        pageSize,
-        total: total || (data ? data.length : 0),
-      });
+      // const { data, total } = res
+      // setTrades(data || []);
+      // setPagination({
+      //   current: page,
+      //   pageSize,
+      //   total: total || (data ? data.length : 0),
+      // });
     } catch (err) {
       console.error("Error fetching trades:", err);
       setError("Failed to load recent trades");
